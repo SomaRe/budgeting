@@ -71,4 +71,28 @@ $(document).ready(function() {
         });
     });
 
+    // when add_budget button is clicked
+    // add a budget to the database
+    $("#add_budget").click(function() {
+        // loop through add_budgets_container class and get the category from span tag
+        // and the budget from input tag
+        var budget = {};
+        $(".add_budgets_container").each(function() {
+            var category = $(this).find("span").text();
+            var amount = $(this).find("input").val();
+            budget[category] = amount;
+        });
+        $.ajax({
+            type: "POST",
+            url: "/settings/add_budget",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(budget),
+            success: function(data) {
+                // refresh the page
+                location.reload();
+            }
+        });
+    });
+
 });

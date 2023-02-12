@@ -45,6 +45,22 @@
                     <input type="text" name="label" id="label" placeholder="Add one or more label, eg: item1, item2">
                     <button id="add_label">Add</button>
                 </div>
+                <h2>Add budgets to Categories</h2>
+                <!-- give an option to add values (numbers) to each category -->
+                <div class="add_budgets row">
+                    {% for category ,budget in budgets.items() %}
+                    <div class="add_budgets_container">
+                        <span class="category">{{ category }}</span>
+                        <input type="number" placeholder="Add budget" value={{ budget }}>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    
+                <button id="add_budget">Save</button>
+                </div>
+
+
             </div>
         </div>
     </div>

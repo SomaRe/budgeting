@@ -7,6 +7,12 @@
     font-family: 'Roboto', sans-serif;
 }
 
+body{
+    /* center whole webpage with maximum width*/
+    margin: 0 auto;
+    max-width: 800px;
+}
+
 .row, .col {
     display: flex;
     flex-wrap: wrap;
@@ -95,4 +101,12 @@ input{
 button{
     margin: 0 0 10px 0;
     padding: 10px 15px;
+}
+
+.add_budgets{
+    flex-direction: column;
+}
+
+.add_budgets_container{
+    margin: 0 10px 10px 0;
 }

@@ -46,11 +46,37 @@ categories = ['Food','Rent','Room necessities','Transportation','Utilities','Fin
 # with app.app_context():
 #     db.create_all()
 
+# Helper functions
+def budget_helper():
+    budgets = json.load(open('budget.json'))
+    transactions = Transactions.query.order_by(Transactions.date).all()
+    transactions = [transaction.__dict__ for transaction in transactions]
+    for transaction in transactions:
+        transaction.pop('_sa_instance_state')
+    # get only transactions from current month
+    transactions = [transaction for transaction in transactions if transaction['date'].month == pd.Timestamp.today().month]
+    # make a dictionary with categories as keys and values as list which contains budget to the category, 
+    # sum of transactions to the category and difference between budget and sum of transactions, percentage of sum of transactions to the budget
+    budget_dict = {category:{'budget':budgets[category], 'sum':0, 'difference':0, 'percentage':0} for category in categories}
+    # add sum of transactions to the category to the dictionary
+    for transaction in transactions:
+        budget_dict[transaction['category']]['sum'] += transaction['value']
+    # add difference between budget and sum of transactions to the dictionary
+    for category in budget_dict:
+        budget_dict[category]['difference'] = int(budget_dict[category]['budget']) - budget_dict[category]['sum']
+    # add percentage of sum of transactions to the budget to the dictionary
+    for category in budget_dict:
+        budget_dict[category]['percentage'] = round(int(budget_dict[category]['sum']) / int(budget_dict[category]['budget']) * 100)
+    # return only the ones sum greater than 0
+    return {category:budget_dict[category] for category in budget_dict if budget_dict[category]['sum'] > 0}
+
 @app.route("/", methods=["GET", "POST"])
 def main():
     labels = [label.label for label in Labels.query.all()]
     categories = [category.category for category in Categories.query.all()]
-    return render_template('transactions.html',labels=labels,categories=categories)
+    budgets = budget_helper()
+    print(budgets)
+    return render_template('transactions.html',labels=labels,categories=categories, budgets=budgets)
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
@@ -62,7 +88,8 @@ def stats():
 def settings():
     labels = [label.label for label in Labels.query.all()]
     categories = [category.category for category in Categories.query.all()]
-    return render_template('settings.html',labels=labels,categories=categories)
+    budgets = json.load(open('budget.json'))
+    return render_template('settings.html',labels=labels,categories=categories, budgets=budgets)
 
 # add_category
 @app.route("/settings/add_category", methods=["GET", "POST"])
@@ -107,6 +134,19 @@ def label_delete():
     db.session.commit()
     return {'labels': [label.label for label in Labels.query.all()]}
 
+#add budget
+@app.route("/settings/add_budget", methods=["GET", "POST"])
+def add_budget():
+    data = request.get_json()
+    print('add budget:',data)
+    # save budget to json file
+    with open('budget.json', 'w') as f:
+        json.dump(data, f)
+    return "passed"
+
+## Settings page END ##
+
+## Transactions page ##
 # add transaction
 @app.route("/add_transaction", methods=["GET", "POST"])
 def add_transaction():

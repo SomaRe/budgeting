@@ -7,11 +7,31 @@
     font-family: 'Roboto', sans-serif;
 }
 
+/* custom minimalist scroll bar for whole webpage */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
 body{
     /* center whole webpage with maximum width*/
     margin: 0 auto;
     max-width: 800px;
 }
+     
 
 header{
     margin: 0 0 10px 0;
@@ -297,6 +317,73 @@ label{
     height: 92vh;
     overflow-y: auto;
 }
+
+.budgeting_card{
+    margin: 10px 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.budgeting_card .card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding: 20px 10px;
+    background-color: transparent;
+}
+
+.budgeting_card .cat_img img{
+    background-color: rgb(255, 182, 255);
+    width: 70px;
+    height: auto;
+    border: 3px solid #000000;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.cat_bud{
+    width: 100%;
+    padding: 0 20px;
+}
+
+.cat_bud .category{
+    font-size: 1.3rem;
+    font-weight: 500;
+} 
+
+.cat_bud .row{
+    margin: 5px 0;
+}
+
+.cat_bud .bar{
+    display: flex;
+    align-items: center;
+    height: 10px;
+}
+
+.cat_bud .bar p{
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-left: 10px;
+}
+
+.cat_bud .bar .outer-bar{
+    height: 100%;
+    width: 100%;
+    background-color: #c5c5c5;
+    border-radius: 10px;
+}
+
+.cat_bud .bar .inner-bar{
+    border-radius: 10px;
+}
+
+.cat_bud .remaining{
+    font-size: 1rem;
+    font-weight: 500;
+    color: #7c7c7c;
+}
+
 /* Budgeting Section END */
 
 /* transaction card section */
@@ -316,7 +403,7 @@ label{
     transition: all 0.5s ease-in-out;
 }
 
-.card{
+.transaction_card .card{
     display: flex;
     flex-direction: column;
     justify-content: center;

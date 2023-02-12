@@ -1,0 +1,5 @@
+body{
+    /* center whole webpage with maximum width*/
+    margin: 0 auto;
+    max-width: 800px;
+}

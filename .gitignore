@@ -6,3 +6,4 @@ __pycache__
 main.db
 test.ipynb
 transactions.csv
+budget.json

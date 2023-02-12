@@ -204,6 +204,7 @@ $(document).ready(function () {
       url: "/get_transactions",
       success: function (data) {
         // clear the transactions container
+        $("#transactions_container").html("");
         // $("#transactions_container").html("<h1>Transactions</h1>");
         // loop through transactions
         for (var i = 0; i < data.transactions.length; i++) {
@@ -276,6 +277,12 @@ $(document).ready(function () {
         get_date();
       },
     });
+  }
+
+  // Reload Budgeting function
+  // get budgeting data from backend and display them
+  function reload_budgeting() {
+    // TODO: get budgeting data from backend
   }
 
   // on clicking delete button
