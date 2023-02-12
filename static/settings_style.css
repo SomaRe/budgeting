@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.row, .col {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    flex-direction: column;
+}
+
+.container{
+    padding: 5% 5%;
+    font-size: 12px;
+}
+
+.back{
+    height: 40px;
+    width: 40px;
+    background-color: lightgreen;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #000000;
+    border-radius: 50%;
+}
+
+.back:active{
+    transform: scale(0.9);
+    box-shadow: 1px 1px 0 1px #000000;
+}
+
+.back a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.back a img{
+    height: 20px;
+    width: 20px;
+}
+
+h2{
+    margin: 30px 0;
+}
+
+.all_categories, .all_labels{
+    margin: 0 0 20px 0;
+}
+
+.category_container, .label_container{
+    border-radius: 10px;
+    margin: 0 10px 10px 0;
+}
+
+.category, .label{
+    font-weight: 500;
+    letter-spacing: 1px;
+    background-color: #ffe66a;
+    border: 3px solid #000000;
+    padding: 5px;
+    border-radius: 10px 0 0 10px;
+}
+
+.category_delete, .label_delete{
+    color: white;
+    display: inline-block;
+    background-color: #ff0000;
+    border: 3px solid #000000;
+    border-left: 0;
+    padding: 5px;
+    border-radius: 0 10px 10px 0;
+    cursor: pointer;
+}
+
+.category_delete:active, .label_delete:active{
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0 1px #000000;
+}
+
+
+input{
+    margin: 0 0 10px 0;
+    padding: 10px 15px;
+    width: 100%;
+}
+
+button{
+    margin: 0 0 10px 0;
+    padding: 10px 15px;
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transactions</title>
+    <link rel="stylesheet" href="static/transactions_style.css" />
+  </head>
+
+  <body>
+    <!-- header -->
+    <header class="row">
+      <h1>budgetIn</h1>
+      <div class="row">
+        <button id="stats">view stats</button>
+        <span id="settings"><img src="static/images/126472.png" alt=""></span>
+      </div>
+    </header>
+
+    <div class="container main_chart_wrapper">
+        <h1>At a glance</h1>
+        <canvas id="main_chart" width="100" height="70"></canvas>
+        <div><button id="reset_chart">Reset Chart</button></div>
+    </div>
+    <div class="container transaction_budget_toggle_wrapper">
+        <h2 class="transaction_budget_toggle">Budgeting</h2>
+        <h2>Transactions</h2>
+    </div>
+    <div class="add_transaction">
+        <div class="add_transaction_expanded"><span>+</span></div>
+        <div class="add_transaction_container_wrapper">
+            <div class="add_transaction_container">
+                <!-- if categories is not empty only then show below element-->
+                {% if categories %}
+                {% else %}
+                <div class="containers_labels_error">No Containers/Labels found, add through
+                    <a href="settings">settings</a>
+                </div>
+                {% endif %}
+                <div class="col">
+                <label for="date">Date</label>
+                <input type="date" name="date" id="date" />
+                </div>
+                <div class="col">
+                <label for="payment">Payment to</label>
+                <input type="text" name="payment" id="payment" />
+                </div>
+                <div class="col">
+                <label for="value">Value</label>
+                <input type="number" name="value" id="value" />
+                </div>
+                <div class="col">
+                <label for="category">Category</label>
+                <select name="category" id="category" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+                    <option value="none" selected disabled hidden>
+                    Select an Option
+                    </option>
+                    <!-- loop through categories -->
+                    {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="col">
+                <p id="labelp">Labels</p>
+                <div class="labels">
+                    {% for label in labels %}
+                    <span class="label" data-label="{{ label }}">{{ label }}</span>
+                    {% endfor %}
+                </div>
+                </div>
+                <div class="col">
+                <label for="comments">Comments</label>
+                <textarea type="text" name="comments" id="comments"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <button id="add_transaction">Add Transaction</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Budgeting container -->
+    <div class="container" id="budgeting_container">
+        <div>Testing</div>
+        <div>Testing</div>
+        <div>Testing</div>
+        <div>Testing</div>
+    </div>
+
+    <!-- Transactions container-->
+    <div class="container" id="transactions_container">
+        <!-- <div class="transaction_card">
+            <div class="card">
+                <div class="row">
+                    <div class="col cat_img">
+                        <img src="static/images/food.png" alt="">
+                    </div>
+                    <div class="col cat_pay">
+                        <div class="row payment">Osmow's shawarma</div>
+                        <div class="row category">Food</div>
+                    </div>
+                    <div class="col date_val">
+                        <div class="row value">$12.56</div>
+                        <div class="row date">13th Dec</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col extra_info"  style="display: none;">
+                        <div class="extra_info_labels"  style="display: none;">
+                            <b>Labels:</b>
+                            <span>Food</span>
+                            <span>Shawarma</span>
+                        </div>
+                        <div class="extra_info_comment"  style="display: none;">
+                            <i><b>Comment:</b></i>
+                            <br>
+                            <p>Delicious shawarma</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="edit_buttons" style="display: none;">
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+            </div>
+        </div> -->
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="static/chartjs-plugin-zoom.min.js"></script>
+    <script src="static/transactions_script.js"></script>
+  </body>
+</html>

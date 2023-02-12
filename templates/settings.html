@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="/static/settings_style.css">
+</head>
+<body>
+    <!-- create a input box and buttons to add categories and labels -->
+    <div class="container">
+        <!-- back button with left arrow -->
+        <div class="row">
+            <div class="col back">
+                <a href="/"><img src="static/images/left-arrow.png" alt=""></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Categories</h2>
+                <!-- all categories into span tags-->
+                <div class="all_categories row">
+                    {% for category in categories %}
+                    <div class="category_container">
+                        <span class="category">{{ category }}</span><span data-category='{{ category }}' class="category_delete">x</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="categories
+                ">
+                    <input type="text" name="category" id="category" placeholder="Add one or more category, eg: item1, item2">
+                    <button id="add_category">Add</button>
+                </div>
+                <h2>Labels</h2>
+                <!-- all labels into span tags-->
+                <div class="all_labels row">
+                    {% for label in labels %}
+                    <div class="label_container">
+                        <span class="label">{{ label }}</span><span data-label='{{ label }}' class="label_delete">x</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="labels">
+                    <input type="text" name="label" id="label" placeholder="Add one or more label, eg: item1, item2">
+                    <button id="add_label">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="static/settings_script.js"></script>
+</body>
+</html>

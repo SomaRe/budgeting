@@ -1,0 +1,8 @@
+git ignore the files
+
+__pycache__
+.vscode
+*.pyc
+main.db
+test.ipynb
+transactions.csv

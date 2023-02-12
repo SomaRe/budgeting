@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    /* center whole webpage with maximum width*/
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+header{
+    margin: 0 0 10px 0;
+    padding: 20px 15px;
+    justify-content: space-between;
+    align-items: center;
+    transition: filter 0.5s ease-in-out;
+    border-bottom: 2px solid #797979;
+}
+
+header #stats{
+    background-color: #ffe66a; 
+    border: 3px solid #000000;
+    color: #333; 
+    padding: 5px 20px;
+    font-size: 16px; 
+    font-weight: 500;
+    border-radius: 20px;
+    box-shadow: 1.5 px 1.5px 0 1px #000000;
+    cursor: pointer;
+}
+
+header #stats:active{
+    transform: scale(0.95);
+    box-shadow: 3px 3px 0 1px #000000;
+}
+
+header .row span{
+    height: 50px;
+    width: 70px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    background-color: skyblue;
+    border: 3px solid #000000;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+header .row span:active{
+    transform: scale(0.95);
+    box-shadow: 3px 3px 0 1px #000000;
+}
+
+header .row span img{
+    height: 25px;
+    width: auto;
+    filter: drop-shadow(1px 1px 0 #000000);
+}
+
+.row, .col{
+    display: flex;
+}
+
+.col{
+    flex-direction: column;
+}
+
+.container{
+    padding: 0 7%;
+}
+
+h1{
+    margin: 20px 0 20px 0;
+}
+
+.main_chart_wrapper{
+    margin-bottom: 20px;
+}
+
+.main_chart_wrapper div{
+    display: flex;
+    justify-content: right;
+}
+
+#reset_chart{
+    margin: 0 0 0 10px;
+    padding: 5px 10px;
+    background-color: #f6e178;
+    border: 2px solid #000000;
+    color: #333; 
+    font-size: 16px; 
+    font-weight: 500;
+    border-radius: 10px;
+    box-shadow: 1.5 px 1.5px 0 1px #000000;
+    cursor: pointer;
+}
+
+.transaction_budget_toggle_wrapper{
+    display: flex;
+}
+
+.transaction_budget_toggle_wrapper h2{
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.transaction_budget_toggle_wrapper h2:first-child{
+    border: #2a2a2a 2px solid;
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    text-align: center;
+}
+
+.transaction_budget_toggle_wrapper h2:last-child{
+    border: #2a2a2a 2px solid;
+    border-radius: 0 10px 10px 0;
+    border-left: 0;
+    text-align: center;
+}
+
+.transaction_budget_toggle{
+    background-color: rgb(255, 182, 255);
+    color: white;
+    border: #2a2a2a 2px solid !important;
+}
+
+/* add transaction section */
+.add_transaction{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    top: 87%;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    z-index: 2;
+    transition: top 0.5s ease-in-out;
+}
+
+.add_transaction_expanded{
+    margin-top: 20px;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(59, 255, 190);
+    z-index: 1;
+    padding: 10px;
+    font-size: 3rem;
+    font-weight: 300;
+    border: 4px solid #000000;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.5s ease-in-out;
+}
+
+.add_transaction_expanded:active{
+    transform: scale(0.9);
+}
+
+.add_transaction_expanded span{
+    transition: transform 0.5s ease-in-out;
+}
+
+.add_transaction_container{
+    opacity: 0;
+    margin-top: 20px;
+    width: 80%;
+    border: 3px solid #000000;
+    border-radius: 20px;
+    padding: 20px;
+    overflow-y: scroll;
+    transition: opacity 0.5s ease-in-out;
+    background-color: white;
+}
+
+.add_transaction_container_wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5vh;
+}
+
+.add_transaction .row{
+    align-items: center;
+}
+
+.rotate{
+    transform: rotate(45deg);
+}
+
+.expanded{
+    top: 0;
+}
+
+.visible{
+    opacity: 1;
+}
+
+.color_change{
+    background-color: lightcoral;
+}
+
+.background_color_change{
+    background-color: white;
+}
+
+#labelp{
+    margin: 30px 0 0 0;
+}
+
+label{
+    margin:20px 0 5px 0;
+}
+
+#category{
+    height: 50px;
+}
+
+.add_transaction_container input, .add_transaction_container select{
+    height: 30px;
+    width: 100%;
+}
+
+.add_transaction_container textarea{
+    height: 110px;
+    width: 100%;
+}
+
+.labels{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.label{
+    font-size: 9px;
+    margin: 5px;
+    background-color: #fecbd3;
+    padding:5px 10px;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.label_selected{
+    background-color: #dd7dff;
+}
+
+.label_submit{
+    margin-top: 20px;
+}
+
+.add_transaction_container .row{
+    justify-content: flex-end;
+}
+
+.containers_labels_error{
+    padding: 10px;
+    background-color: tomato;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    color: white;
+}
+
+#add_transaction{
+    margin-top: 20px;
+    background-color: #dd7dff;
+    padding: 10px;
+    font-weight: 500;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    box-shadow: 2px 2px 0 1px #000000;
+    cursor: pointer;
+}
+
+#add_transaction:active{
+    transform: scale(0.9);
+    box-shadow: 1px 1px 0 1px #000000;
+}
+/* add transaction section END */
+
+/* Budgeting Section */
+#budgeting_container{
+    height: 92vh;
+    overflow-y: auto;
+}
+/* Budgeting Section END */
+
+/* transaction card section */
+#transactions_container{
+    display: none;
+    height: 92vh;
+    overflow-y: auto;
+}
+
+#transactions_container h1{
+   margin: 30px 0 20px 0;
+   transition: filter 0.5s ease-in-out;
+}
+
+.transaction_card{
+    margin: 10px 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding: 20px 10px;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    background-color: #fff8eb;
+}
+
+.card .row .col{
+    justify-content: center;
+}
+
+
+.cat_img img{
+    background-color: rgb(255, 182, 255);
+    width: 50px;
+    height: auto;
+    border: 3px solid #000000;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.cat_pay{
+    margin-left: 20px;
+    width: 60%;
+    align-items: flex-start;
+}
+
+.cat_pay .payment{
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 1.2rem;
+    font-weight: 500;
+    width: 120px;
+    white-space: nowrap;
+}
+
+.cat_pay .category{
+    color: #878787;
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+.date_val{
+    align-items: flex-end;
+    margin-left: auto;
+}
+.date_val .value{
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.date_val .date{
+    color: #878787;
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+.extra_info{
+    margin-top: 10px;
+}
+
+.extra_info_labels{
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.extra_info_comment{
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.extra_info_comment p{
+    color: #3f3f3f;
+}
+
+.edit_buttons{
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.edit_buttons button{
+    margin: 0 5px;
+    padding: 10px;
+    font-weight: 500;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    /* box-shadow: 2px 2px 0 1px #000000; */
+    cursor: pointer;
+}
+
+.edit_buttons .edit{
+    background-color: lightgreen;
+}
+
+.edit_buttons .edit:active{
+    transform: scale(0.9);
+    box-shadow: 1px 1px 0 1px #000000;
+}
+
+.edit_buttons .delete{
+    background-color: lightcoral;
+}
+
+.edit_buttons .delete:active{
+    transform: scale(0.9);
+    box-shadow: 1px 1px 0 1px #000000;
+}
+
+/* last .transaction_card */
+.transaction_card:last-child{
+    margin-bottom: 15vh;
+}
+
+.blur{
+    filter: blur(2px);
+}
+
+.scale{
+    transform: scale(1.1);
+    margin: 30px 0;
+}
+/* transaction card section END */
