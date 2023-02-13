@@ -19,6 +19,7 @@ $(document).ready(function() {
         });
     });
 
+
     // when delete_category button is clicked
     // delete the selected category from the database
     $(".category_delete").click(function() {
@@ -79,7 +80,7 @@ $(document).ready(function() {
         var budget = {};
         $(".add_budgets_container").each(function() {
             var category = $(this).find("span").text();
-            var amount = $(this).find("input").val();
+            var amount = parseFloat($(this).find("input").val());
             budget[category] = amount;
         });
         $.ajax({
@@ -94,5 +95,21 @@ $(document).ready(function() {
             }
         });
     });
+
+     // double click on category name to edit it
+    //  $(".category").dblclick(function() {
+    //     console.log("double clicked");
+    //     var category = $(this).text();
+    //     $(this).html("<input type='text' class='category_edit' value='" + category + "'>");
+    //     $(".category_edit").focus();
+    //     // click outside the input box to save the new category name and change the element back to span
+    //     $(".category_edit").blur(function() {
+    //         console.log("blur");
+    //         var new_category = $(this).val();
+    //         $(this).parent().html(new_category);
+    //     });
+
+    // });
+
 
 });

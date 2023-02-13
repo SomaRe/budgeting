@@ -153,6 +153,7 @@ h1{
 
 /* add transaction section */
 .add_transaction{
+    overflow: auto;
     position: fixed;
     display: flex;
     align-items: center;
@@ -200,7 +201,6 @@ h1{
     border: 3px solid #000000;
     border-radius: 20px;
     padding: 20px;
-    overflow-y: scroll;
     transition: opacity 0.5s ease-in-out;
     background-color: white;
 }
@@ -246,7 +246,7 @@ label{
 }
 
 #category{
-    height: 50px;
+    height: 30px;
 }
 
 .add_transaction_container input, .add_transaction_container select{
@@ -323,12 +323,16 @@ label{
     transition: all 0.5s ease-in-out;
 }
 
+.budgeting_card:last-child{
+    margin-bottom: 15vh;
+}
+
 .budgeting_card .card{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    padding: 20px 10px;
+    padding: 10px 10px;
     background-color: transparent;
 }
 
@@ -343,7 +347,7 @@ label{
 
 .cat_bud{
     width: 100%;
-    padding: 0 20px;
+    padding: 0 10px;
 }
 
 .cat_bud .category{
@@ -384,18 +388,67 @@ label{
     color: #7c7c7c;
 }
 
+
+
 /* Budgeting Section END */
 
 /* transaction card section */
 #transactions_container{
     display: none;
-    height: 92vh;
-    overflow-y: auto;
 }
 
-#transactions_container h1{
-   margin: 30px 0 20px 0;
-   transition: filter 0.5s ease-in-out;
+#inner_transactions_container{
+    height: 97vh;
+    overflow-y: auto;
+    margin-bottom: 10vh;
+}
+
+#transactions_container #filter{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin: 20px 0;
+
+}
+
+#transactions_container #filter .filter_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    background-color: #f6e178;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+#transactions_container #filter #filter_options{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 20px;
+    background-color: #f6e178;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+#filter_options .filter-category{
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+#transactions_container #filter img{
+    width: 15px;
+    height: auto;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+#transactions_container #filter p{
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: large;
 }
 
 .transaction_card{
@@ -522,7 +575,7 @@ label{
 
 /* last .transaction_card */
 .transaction_card:last-child{
-    margin-bottom: 15vh;
+    margin-bottom: 20vh;
 }
 
 .blur{

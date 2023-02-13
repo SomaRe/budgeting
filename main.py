@@ -1,10 +1,13 @@
 from flask import Flask
 from flask import render_template, request
 import pandas as pd
+from datetime import datetime
+import itertools
 import json
 import uuid
 
 app = Flask(__name__)
+app.config["JSON_SORT_KEYS"] = False
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -67,16 +70,15 @@ def budget_helper():
     # add percentage of sum of transactions to the budget to the dictionary
     for category in budget_dict:
         budget_dict[category]['percentage'] = round(int(budget_dict[category]['sum']) / int(budget_dict[category]['budget']) * 100)
-    # return only the ones sum greater than 0
-    return {category:budget_dict[category] for category in budget_dict if budget_dict[category]['sum'] > 0}
+    # sort dictionary by difference
+    budget_dict = dict(sorted(budget_dict.items(), key=lambda item: item[1]['percentage'], reverse=True))
+    return budget_dict
 
 @app.route("/", methods=["GET", "POST"])
 def main():
     labels = [label.label for label in Labels.query.all()]
     categories = [category.category for category in Categories.query.all()]
-    budgets = budget_helper()
-    print(budgets)
-    return render_template('transactions.html',labels=labels,categories=categories, budgets=budgets)
+    return render_template('transactions.html',labels=labels,categories=categories)
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
@@ -107,7 +109,6 @@ def add_category():
 @app.route("/settings/category_delete", methods=["GET", "POST"])
 def category_delete():
     data = request.get_json()
-    print('delete category:',data)
     # delete data from categories table
     Categories.query.filter_by(category=data).delete()
     db.session.commit()
@@ -128,7 +129,6 @@ def add_label():
 @app.route("/settings/label_delete", methods=["GET", "POST"])
 def label_delete():
     data = request.get_json()
-    print('delete label:',data)
     # delete data from labels table
     Labels.query.filter_by(label=data).delete()
     db.session.commit()
@@ -138,7 +138,6 @@ def label_delete():
 @app.route("/settings/add_budget", methods=["GET", "POST"])
 def add_budget():
     data = request.get_json()
-    print('add budget:',data)
     # save budget to json file
     with open('budget.json', 'w') as f:
         json.dump(data, f)
@@ -147,12 +146,23 @@ def add_budget():
 ## Settings page END ##
 
 ## Transactions page ##
+
+# get budgeting
+@app.route("/get_budgeting", methods=["GET", "POST"])
+def get_budgeting():
+    budget_dict = budget_helper()
+    return budget_dict
+
+# get categories
+@app.route("/get_categories", methods=["GET", "POST"])
+def get_categories():
+    categories = [category.category for category in Categories.query.all()]
+    return {'categories': categories}
+
 # add transaction
 @app.route("/add_transaction", methods=["GET", "POST"])
 def add_transaction():
     data = request.get_json()
-    print('add transaction:',data)
-    print(data['labels'])
     # convert date to python date object
     data['date'] = pd.to_datetime(data['date']).date()
     # add transaction to database
@@ -187,7 +197,6 @@ def get_date():
 @app.route("/delete_transaction", methods=["GET", "POST"])
 def delete_transaction():
     data = request.get_json()
-    print('delete transaction:',data['id'])
     # delete data from transactions table
     Transactions.query.filter_by(id=data['id']).delete()
     db.session.commit()
@@ -197,7 +206,6 @@ def delete_transaction():
 @app.route("/update_transaction", methods=["GET", "POST"])
 def update_transaction():
     data = request.get_json()
-    print('update transaction:',data)
     # convert date to python date object
     data['date'] = pd.to_datetime(data['date']).date()
     # update data from transactions table
@@ -227,21 +235,41 @@ def main_chart():
     # for every transaction_dict, sum the values of same dates
     for month in transactions_dict:
         transactions_dict[month] = pd.DataFrame(transactions_dict[month]).groupby('x').sum().reset_index().to_dict('records')
+    # get first 3 key value pairs of transactions_dict
+    transactions_dict = dict(itertools.islice(transactions_dict.items(), 3))
     return {'transactions': transactions_dict}
 
 
 # read csv file and return the total amount of money spent every month
 @app.route("/stats/getTotalMonth", methods=['GET','POST'])
 def getTotalMonth():
-    df = pd.read_csv('transactions.csv')
-    df['Date'] = pd.to_datetime(df['Date'])
-    df['Month'] = df['Date'].dt.month
-    df['Year'] = df['Date'].dt.year
-    df = df.groupby(['Month','Year']).sum()
-    df = df.reset_index()
-    df = df.drop(['Comments'], axis=1)
-    df = df.rename(columns={'Value':'Total'})
-    return df.to_json()
+    transactions = Transactions.query.order_by(Transactions.date.desc()).all()
+    # convert transactions to a list of dictionaries
+    transactions = [transaction.__dict__ for transaction in transactions]
+    # remove _sa_instance_state from each dictionary
+    print(transactions)
+    for transaction in transactions:
+        transaction.pop('_sa_instance_state')
+    # create all months+years list
+    months = []
+    for transaction in transactions:
+        date = transaction['date']
+        month = date.strftime('%b %Y')
+        if month not in months:
+            months.append(month)
+    # sort months list with months, years in ascending order
+    months.sort(key=lambda date: datetime.strptime(date, '%b %Y'))
+    
+    # sums all values of transactions in each month-year
+    totals = []
+    for month in months:
+        value = 0
+        for transaction in transactions:
+            if transaction['date'].strftime('%b %Y') == month:
+                value += transaction['value']
+        totals.append(value)
+    # return transactions_dict
+    return {'months': months, 'totals': totals}
 
 # # read csv file and return the total amount of money spent every day of the month
 @app.route("/stats/totalDayMonth", methods=['GET','POST'])

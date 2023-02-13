@@ -120,7 +120,7 @@ $(document).ready(function () {
     });
     if (update_transaction[0] == true) {
       // check if all fields are filled
-      if (payment == "" || value == "" || category == "" || date == "") {
+      if (payment == "" || value == "" || category == "null" || date == "") {
         // display error message via alert
         alert("Please fill all the fields");
       } else {
@@ -144,8 +144,8 @@ $(document).ready(function () {
             clear_input_fields();
             // get date from backend and update the input field
             get_date();
-            // reload transactions
-            reload_transactions();
+            // reload all
+            reload_all();
             // update update_transaction flag and id
             update_transaction = [false, ''];
             // click the expand button to close the add transaction container
@@ -159,7 +159,7 @@ $(document).ready(function () {
     }
     else {
       // check if all fields are filled
-      if (payment == "" || value == "" || category == "" || date == "") {
+      if (payment == "" || value == "" || category == "null" || date == "") {
         // display error message via alert
         alert("Please fill all the fields");
       } else {
@@ -182,8 +182,8 @@ $(document).ready(function () {
             clear_input_fields();
             // get date from backend and update the input field
             get_date();
-            // reload transactions
-            reload_transactions();
+            // reload all
+            reload_all();
             // click the expand button to close the add transaction container
             $(".add_transaction_expanded").click();
           },
@@ -204,8 +204,7 @@ $(document).ready(function () {
       url: "/get_transactions",
       success: function (data) {
         // clear the transactions container
-        $("#transactions_container").html("");
-        // $("#transactions_container").html("<h1>Transactions</h1>");
+        $("#inner_transactions_container").html("");
         // loop through transactions
         for (var i = 0; i < data.transactions.length; i++) {
           // get the transaction
@@ -225,7 +224,7 @@ $(document).ready(function () {
           }
           // create the transaction html
           var transaction_html = `
-            <div class="transaction_card">
+            <div class="transaction_card" data-category='${transaction.category}'>
               <div class="card">
                 <div class="row">
                   <div class="col cat_img">
@@ -272,7 +271,7 @@ $(document).ready(function () {
         </div>  
           `;
           // append the transaction html to the transactions container
-          $("#transactions_container").append(transaction_html);
+          $("#inner_transactions_container").append(transaction_html);
         }
         get_date();
       },
@@ -283,7 +282,117 @@ $(document).ready(function () {
   // get budgeting data from backend and display them
   function reload_budgeting() {
     // TODO: get budgeting data from backend
+    $.ajax({
+      type: "GET",
+      url: "/get_budgeting",
+      success: function (data) {
+        green = "#6afa6a";
+        orange = "orange";
+        red = "#ff0000";
+        // find the total budget
+        var total_budget = 0;
+        for (var i = 0; i < Object.keys(data).length; i++) {
+          total_budget += data[Object.keys(data)[i]].budget;
+        }
+        // find the total spent
+        var total_spent = 0;
+        for (var i = 0; i < Object.keys(data).length; i++) {
+          total_spent += data[Object.keys(data)[i]].sum;
+        }
+        header_html = `<h4 style="margin:20px 10px;display:flex; justify-content:space-between;"><span>Budget: $${total_budget.toFixed(2)} </span> <span>Spent: $${total_spent.toFixed(2)}</span></h4>`;
+        // clear the budgeting container
+        $("#budgeting_container").html(header_html);
+        // $("#budgeting_container").html("<h1>Budgeting</h1>");
+        // loop through budgeting data
+        for (var i = 0; i < Object.keys(data).length; i++) {
+          // get the budgeting data
+          var budgeting = Object.keys(data)[i];
+          // create the budgeting html
+          var budgeting_html = `
+            <div class="budgeting_card">
+              <div class="card">
+                  <div class="row">
+                      <div class="col cat_img">
+                          <img src="static/images/${budgeting}.png" alt="">
+                      </div>
+                      <div class="col cat_bud">
+                          <div class="row category">${budgeting}</div>
+                          <div class="row bar">
+                            <div class="outer-bar">
+                              <div class="inner-bar" style="background-color: ${
+                                data[budgeting].percentage < 70 ? green : data[budgeting].percentage < 90 ? orange : red
+                               }; 
+                              width: ${ 
+                                // if the percentage is greater than 100, set it to 100
+                                data[budgeting].percentage > 100 ? 100 : data[budgeting].percentage
+                              }%; height: 100%;"></div>
+                            </div>
+                            <p>$${data[budgeting].budget}</p>
+                          </div>
+                      <div class="row remaining">$${
+                        // if the difference is negative, make it positive and change remaining to overbudget
+                        // round the difference to 2 decimal places
+                        data[budgeting].difference < 0 ? Math.round(-data[budgeting].difference * 100) / 100 + ' overbudget' : Math.round(data[budgeting].difference * 100) / 100 + ' remaining'
+                      }</div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+          `;
+          // append the budgeting html to the budgeting container
+          $("#budgeting_container").append(budgeting_html);
+        }
+      },
+    });
   }
+
+  // Categories for filter
+  function filter_categories() {
+    $("#filter_options").html("");
+    $.ajax({
+      type: "GET",
+      url: "/get_categories",
+      success: function (data) {
+        for (var i = 0; i < data.categories.length; i++) {
+          var category = data.categories[i];
+          // have a check box for each category
+          var category_html = `
+            <div class="filter-category">
+              <input type="checkbox" id="${'filter-'+category}" name="${category}" value="${category}" checked>
+              <label for="${'filter-'+category}">${category}</label>
+            </div>
+          `;
+          // append the category html to the filter options
+          $("#filter_options").append(category_html);
+        }
+      },
+    });
+  }
+
+  // if checkbox is checked, show the transactions with that category
+  $(document).on("change", ".filter-category input", function () {
+    // get the category
+    var category = $(this).val();
+    console.log(category);
+    // if the checkbox is checked
+    if ($(this).is(":checked")) {
+      // class transaction_card with data-category equal to the category
+      $('.transaction_card').each(function() {
+        if ($(this).data('category') == category) {
+          $(this).show();
+        }
+      });
+    } else {
+      // if the checkbox is not checked
+      $('.transaction_card').each(function() {
+        if ($(this).data('category') == category) {
+          $(this).hide();
+        }
+      });
+    }
+  });
+
 
   // on clicking delete button
   $(document).on("click", ".delete", function () {
@@ -299,8 +408,8 @@ $(document).ready(function () {
           id: id,
         }),
         success: function () {
-          // reload transactions
-          reload_transactions();
+          // reload all
+          reload_all();
         },
         error: function (error) {
           console.log("error:", error);
@@ -478,8 +587,17 @@ $(document).ready(function () {
     }
   });
 
-    
+  function reload_all(){
+    // run all the functions
+    reload_budgeting();
+    reload_transactions();
+    filter_categories();
+    main_chart();
+  }  
+
   window.addEventListener('resize', resizeCanvas);
+  reload_budgeting();
   reload_transactions();
+  filter_categories();
   main_chart();
 });

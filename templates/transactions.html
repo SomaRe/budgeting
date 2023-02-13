@@ -52,7 +52,7 @@
                 </div>
                 <div class="col">
                 <label for="category">Category</label>
-                <select name="category" id="category" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+                <select name="category" id="category">
                     <option value="none" selected disabled hidden>
                     Select an Option
                     </option>
@@ -83,65 +83,21 @@
 
     <!-- Budgeting container -->
     <div class="container" id="budgeting_container">
-        <div class="budgeting_card">
-            <div class="card">
-                <div class="row">
-                    <div class="col cat_img">
-                        <img src="static/images/food.png" alt="">
-                    </div>
-                    <div class="col cat_bud">
-                        <div class="row category">Food</div>
-                        <div class="row bar">
-                            <div class="outer-bar">      
-                                <div class="inner-bar" style="background-color: #ff0000; width: 70%; height: 100%;
-                            "></div>   
-                            </div>  
-                            <p>$50</p>                       
-                        </div>
-                        <div class="row remaining">$20 remaining</div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
+    <!-- TODO: Add filter -->
     <!-- Transactions container-->
-    <div class="container" id="transactions_container">
-        <!-- <div class="transaction_card">
-            <div class="card">
-                <div class="row">
-                    <div class="col cat_img">
-                        <img src="static/images/food.png" alt="">
-                    </div>
-                    <div class="col cat_pay">
-                        <div class="row payment">Osmow's shawarma</div>
-                        <div class="row category">Food</div>
-                    </div>
-                    <div class="col date_val">
-                        <div class="row value">$12.56</div>
-                        <div class="row date">13th Dec</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col extra_info"  style="display: none;">
-                        <div class="extra_info_labels"  style="display: none;">
-                            <b>Labels:</b>
-                            <span>Food</span>
-                            <span>Shawarma</span>
-                        </div>
-                        <div class="extra_info_comment"  style="display: none;">
-                            <i><b>Comment:</b></i>
-                            <br>
-                            <p>Delicious shawarma</p>
-                        </div>
-                    </div>
-                </div>
+    <div id="transactions_container">
+        <div class="container" id="filter">
+            <div class="filter_container">
+                <img src="static/images/filter.png" alt="">
+                <p>filter</p>
             </div>
-            <div class="edit_buttons" style="display: none;">
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
+            <div id="filter_options">
+                
             </div>
-        </div> -->
+        </div>
+        <div class="container" id="inner_transactions_container"></div>
     </div>
     
     <!-- JavaScript -->

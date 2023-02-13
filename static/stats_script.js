@@ -33,19 +33,14 @@ function getTotalMonth() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            var total = [];
-            var monthYear = [];
-            for (var i = 0; i < Object.keys(data['Month']).length; i++) {
-                total.push(data['Total'][i]);
-                monthYear.push(Months[data['Month'][i] - 1] + ' ' + data['Year'][i]);
-            }
+            console.log(data);
 
             const graphData = {
-                labels: monthYear,
+                labels: data.months,
                 datasets: [{
                 label: 'Monthly Total',
-                data: total,
-                backgroundColor: getRandomColors(total.length, 0.7),
+                data: data.totals,
+                backgroundColor: getRandomColors(data.totals.length, 0.7),
                 borderWidth: 1
             }]
             };
@@ -149,7 +144,7 @@ function totalDayMonth() {
 }
 
 getTotalMonth();
-totalDayMonth();
+// totalDayMonth();
 
 
 });
