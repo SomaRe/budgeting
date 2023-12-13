@@ -79,8 +79,8 @@ labels = ['amazon','onlinepurchase','shawarma', 'phone','wifi','paybright','face
 categories = ['Food','Rent','Room necessities','Transportation','Utilities','Financing','Groceries','Clothing','Personal','Entertainment','Gifts','Electronics','Hobby','Other']
 
 # create database
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 # @app.before_first_request
 # def create_tables():

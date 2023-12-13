@@ -28,6 +28,7 @@ $(document).ready(function () {
                 url: "/get_categories",
                 success: function (data) {
                     categories = data.categories;
+                    console.log("categories:", categories);
                     resolve();
                 },
                 error: function (error) {
@@ -45,9 +46,9 @@ $(document).ready(function () {
             .map(function (label) {
                 return (
                     '<span class="label" data-label="' +
-                    label +
+                    label['id'] +
                     '">' +
-                    label +
+                    label['name'] +
                     "</span>"
                 );
             })
@@ -59,7 +60,7 @@ $(document).ready(function () {
         return categories
             .map(function (category) {
                 return (
-                    '<option value="' + category + '">' + category + "</option>"
+                    '<option value="' +  category['id'] + '">' + category['name'] + "</option>"
                 );
             })
             .join("");
