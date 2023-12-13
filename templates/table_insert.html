@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="/static/table_insert.css">
+</head>
+
+<body><div class="container">
+    <div class="row">
+        <div class="col back">
+            <a href="/"><img src="static/images/left-arrow.png" alt=""></a>
+        </div>
+    </div>
+    <!-- A table with columns: Date (input type date), Payment to (text), Value (text), Category(drop down), Labels (text area), comments (text area), and Delete (button) -->
+    <div class="table_container">
+        <div class="row table_header">
+            <div class="col">
+                <h2>Insert Transactions</h2>
+            </div>
+            <div class="col">
+                <div class="row table_header_buttons">
+                    <button id="add_row">Add Row</button>
+                    <button id="insert_data">Insert All</button>
+                </div>
+            </div>
+        </div>
+            <table id="transactions_table">
+                <tr>
+                    <th>Date</th>
+                    <th>Payment to</th>
+                    <th>Value</th>
+                    <th>Category</th>
+                    <th>Labels</th>
+                    <th>Comments</th>
+                    <th>Delete</th>
+                </tr>
+            </table>
+        </div>
+</div>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="static/table_insert.js"></script>
+</body>
+
+</html>

@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transactions</title>
     <link rel="stylesheet" href="static/transactions_style.css" />
-  </head>
+</head>
 
-  <body>
+<body>
     <!-- header -->
     <header class="row">
-      <h1>budgetIn</h1>
-      <div class="row">
-        <button id="stats">view stats</button>
-        <span id="settings"><img src="static/images/126472.png" alt=""></span>
-      </div>
+        <h1>budgetIn</h1>
+        <div class="row">
+            <button id="stats">view stats</button>
+            <span id="settings"><img src="static/images/126472.png" alt=""></span>
+        </div>
     </header>
 
     <div class="container main_chart_wrapper">
@@ -34,45 +35,48 @@
                 <!-- if categories is not empty only then show below element-->
                 {% if categories %}
                 {% else %}
-                <div class="containers_labels_error">No Containers/Labels found, add through
+                <div class="containers_labels_error">No categories/Labels found, add through
                     <a href="settings">settings</a>
                 </div>
                 {% endif %}
                 <div class="col">
-                <label for="date">Date</label>
-                <input type="date" name="date" id="date" />
+                    <span class="table_insert_link"><a href="table_insert">Click here to add multiple values</a></span>
                 </div>
                 <div class="col">
-                <label for="payment">Payment to</label>
-                <input type="text" name="payment" id="payment" />
+                    <label for="date">Date</label>
+                    <input type="date" name="date" id="date" />
                 </div>
                 <div class="col">
-                <label for="value">Value</label>
-                <input type="number" name="value" id="value" />
+                    <label for="payment">Payment to</label>
+                    <input type="text" name="payment" id="payment" />
                 </div>
                 <div class="col">
-                <label for="category">Category</label>
-                <select name="category" id="category">
-                    <option value="none" selected disabled hidden>
-                    Select an Option
-                    </option>
-                    <!-- loop through categories -->
-                    {% for category in categories %}
-                    <option value="{{ category }}">{{ category }}</option>
-                    {% endfor %}
-                </select>
+                    <label for="value">Value</label>
+                    <input type="number" name="value" id="value" />
                 </div>
                 <div class="col">
-                <p id="labelp">Labels</p>
-                <div class="labels">
-                    {% for label in labels %}
-                    <span class="label" data-label="{{ label }}">{{ label }}</span>
-                    {% endfor %}
-                </div>
+                    <label for="category">Category</label>
+                    <select name="category" id="category">
+                        <option value="none" selected disabled hidden>
+                            Select an Option
+                        </option>
+                        <!-- loop through categories -->
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col">
-                <label for="comments">Comments</label>
-                <textarea type="text" name="comments" id="comments"></textarea>
+                    <p id="labelp">Labels</p>
+                    <div class="labels">
+                        {% for label in labels %}
+                        <span class="label" data-label="{{ label }}">{{ label }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="comments">Comments</label>
+                    <textarea type="text" name="comments" id="comments"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -85,7 +89,7 @@
     <div class="container" id="budgeting_container">
     </div>
 
-    <!-- TODO: Add filter -->
+    <!-- TODO: Add Search -->
     <!-- Transactions container-->
     <div id="transactions_container">
         <div class="container" id="filter">
@@ -94,17 +98,25 @@
                 <p>filter</p>
             </div>
             <div id="filter_options">
-                
+                <div class="options"></div>
+                <div class="quick_options">
+                    <!-- 2 checkbox's one with select all and another deselect all -->
+                    <div class="row">
+                        <input type="checkbox" name="toggle_all" id="toggle_all" />
+                        <label for="select_all">Toggle All</label>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container" id="inner_transactions_container"></div>
     </div>
-    
+
     <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="static/chartjs-plugin-zoom.min.js"></script>
     <script src="static/transactions_script.js"></script>
-  </body>
+</body>
+
 </html>

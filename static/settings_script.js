@@ -10,9 +10,8 @@ $(document).ready(function() {
             type: "POST",
             url: "/settings/add_category",
             contentType: "application/json",
-            dataType: "json",
             data: JSON.stringify(category_array),
-            success: function(data) {
+            success: function() {
                 // refresh the page
                 location.reload();
             }
@@ -42,6 +41,7 @@ $(document).ready(function() {
     $("#add_label").click(function() {
         var label = $("#label").val();
         var label_array = label.split(", ");
+        console.log(label_array);
         $.ajax({
             type: "POST",
             url: "/settings/add_label",
@@ -49,6 +49,7 @@ $(document).ready(function() {
             dataType: "json",
             data: JSON.stringify(label_array),
             success: function(data) {
+                console.log(data);
                 // refresh the page
                 location.reload();
             }
@@ -87,11 +88,17 @@ $(document).ready(function() {
             type: "POST",
             url: "/settings/add_budget",
             contentType: "application/json",
-            dataType: "json",
+            dataType: "text",
             data: JSON.stringify(budget),
-            success: function(data) {
+            success: function() {
+                $("#success-message")
+                .text("Budget added successfully!")
+                .css("color", "green")
+                .fadeIn(500)
+                .delay(500)
+                .fadeOut(500);
                 // refresh the page
-                location.reload();
+                // location.reload();
             }
         });
     });

@@ -1,6 +1,30 @@
 // jquery
 $(document).ready(function () {
 
+  var allCategories = [];
+  var allLabels = [];
+
+  function fetchCategories() {
+    $.ajax({
+      type: "GET",
+      url: "/get_categories",
+      success: function (data) {
+        allCategories = data.categories;
+        console.log(allCategories);
+      },
+    });
+  }
+  
+  function fetchLabels() {
+    $.ajax({
+      type: "GET",
+      url: "/get_labels",
+      success: function (data) {
+        allLabels = data.labels;
+      },
+    });
+  }
+
   // variables and flags
   var update_transaction = [false, ''];
 
@@ -108,14 +132,20 @@ $(document).ready(function () {
     // get all the values from the input fields
     var payment = $("#payment").val();
     var value = $("#value").val();
-    var category = $("#category").val();
+    // Find the selected category by its name and get its ID
+  var selectedCategoryName = $("#category").val();
+  var category = allCategories.find((cat) => cat.name === selectedCategoryName).id
     var comments = $("#comments").val();
     var date = $("#date").val();
     var labels = [];
     // loop through labels and get the checked ones
     $(".label").each(function () {
       if ($(this).hasClass("label_selected")) {
-        labels.push($(this).text());
+        var labelName = $(this).text();
+        console.log(labelName);
+        console.log(allLabels);
+        var labelId = allLabels.find((lbl) => lbl.name === labelName).id;
+        labels.push(labelId);
       }
     });
     if (update_transaction[0] == true) {
@@ -137,7 +167,7 @@ $(document).ready(function () {
             category: category,
             comments: comments,
             date: date,
-            labels: labels.join(", "),
+            labels: labels,
           }),
           success: function () {
             // clear all input fields
@@ -175,7 +205,7 @@ $(document).ready(function () {
             category: category,
             comments: comments,
             date: date,
-            labels: labels.join(", "),
+            labels: labels,
           }),
           success: function () {
             // clear all input fields
@@ -212,30 +242,29 @@ $(document).ready(function () {
           // null check comments
           var comments = null_check(transaction.comments);
           // get the labels
-          var labels = null_check(transaction.labels).split(", ");
+          var labels = null_check(transaction.labels);
+
           // create the labels html
-          if (labels[0] == "") {
-            var labels_html = "";
-          } else {
-            var labels_html = "";
-            for (var j = 0; j < labels.length; j++) {
-              labels_html += `<span class="label">${labels[j]}</span>`;
-            }
-          }
+          var labels_html = labels
+            .map((label) => {
+              return label ? `<span class="label">${label}</span>` : "";
+            })
+            .join("");
+
           // create the transaction html
           var transaction_html = `
             <div class="transaction_card" data-category='${transaction.category}'>
               <div class="card">
                 <div class="row">
-                  <div class="col cat_img">
-                    <img src="/static/images/${
-                      transaction.category
-                    }.png" alt="">
-                  </div>
-                  <div class="col cat_pay">
-                        <div class="row payment">${transaction.payment}</div>
-                        <div class="row category">${transaction.category}</div>
-                  </div>
+                   <div class="col cat_img">
+            <img src="static/images/${
+              transaction.category
+            }.png" alt="" onerror="this.onerror=null; this.src='static/images/Other.png';">
+          </div>
+          <div class="col cat_pay">
+                <div class="row payment">${transaction.payment}</div>
+                <div class="row category">${transaction.category}</div>
+          </div>
                   <div class="col date_val">
                         <div class="row value">$${transaction.value}</div>
                         <div class="row date">${transaction.date.slice(
@@ -248,7 +277,7 @@ $(document).ready(function () {
                     <div class="col extra_info"  style="display: none;">
                         <div class="extra_info_labels"  style="display: none;">
                             <b>Labels:</b>${
-                              labels_html == "" ? " No labels" : labels_html
+                              labels.length == 0 ? " No labels" : labels_html
                             }
                         </div>
                         <div class="extra_info_comment"  style="display: none;">
@@ -313,7 +342,7 @@ $(document).ready(function () {
               <div class="card">
                   <div class="row">
                       <div class="col cat_img">
-                          <img src="static/images/${budgeting}.png" alt="">
+                      <img src="static/images/${budgeting}.png" alt="" onerror="this.onerror=null; this.src='static/images/Other.png';">
                       </div>
                       <div class="col cat_bud">
                           <div class="row category">${budgeting}</div>
@@ -349,7 +378,7 @@ $(document).ready(function () {
 
   // Categories for filter
   function filter_categories() {
-    $("#filter_options").html("");
+    $("#filter_options .options").html("");
     $.ajax({
       type: "GET",
       url: "/get_categories",
@@ -364,17 +393,42 @@ $(document).ready(function () {
             </div>
           `;
           // append the category html to the filter options
-          $("#filter_options").append(category_html);
+          $("#filter_options .options").append(category_html);
         }
       },
     });
   }
 
+  // clicking oo filter_container class will show the filter options
+  $(".filter_container").click(function () {
+    // transition the filter options
+    $("#filter_options").slideToggle(200);
+  });
+
+  // toggle_all function
+  $("#toggle_all").click(function () {
+    // if the toggle all button is checked
+    if ($(this).is(":checked")) {
+      // check all the checkboxes
+      $(".filter-category input").each(function () {
+        $(this).prop("checked", false);
+      });
+    }
+    else {
+      // if the toggle all button is not checked
+      // uncheck all the checkboxes
+      $(".filter-category input").each(function () {
+        $(this).prop("checked", true);
+      });
+    }
+    // trigger the change event for the checkboxes
+    $(".filter-category input").trigger("change");
+  });
+
   // if checkbox is checked, show the transactions with that category
   $(document).on("change", ".filter-category input", function () {
     // get the category
     var category = $(this).val();
-    console.log(category);
     // if the checkbox is checked
     if ($(this).is(":checked")) {
       // class transaction_card with data-category equal to the category
@@ -392,7 +446,6 @@ $(document).ready(function () {
       });
     }
   });
-
 
   // on clicking delete button
   $(document).on("click", ".delete", function () {
@@ -460,7 +513,8 @@ $(document).ready(function () {
   });
 
   // Chart.js
-  // get a mixed line chart of the transactions, where x-axis is the date and y-axis is the value
+  // get a mixed line chart of the transactions,
+  // where x-axis is the date and y-axis is the value
   // get the data from the backend
   function main_chart(){
     $.ajax({
@@ -511,9 +565,7 @@ $(document).ready(function () {
   // reset chart to default on clicking reset_chart ID button
   $("#reset_chart").click(function(){
     at_a_glance.resetZoom();
-
   });
-
 
   // get the data for the chart
   function create_chart_datasets(data) {
@@ -596,6 +648,8 @@ $(document).ready(function () {
   }  
 
   window.addEventListener('resize', resizeCanvas);
+  fetchCategories();
+  fetchLabels();
   reload_budgeting();
   reload_transactions();
   filter_categories();

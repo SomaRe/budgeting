@@ -7,3 +7,6 @@ main.db
 test.ipynb
 transactions.csv
 budget.json
+.prettierrc
+venv
+main_backup.db
