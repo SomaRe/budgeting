@@ -1,6 +1,8 @@
 # Personal Budgeting Software 📊
 Welcome to our Personal Budgeting Software, a modern, user-friendly application designed to help you manage your finances with ease. Utilizing Python for backend functionality and a web-based (Pure HTML, CSS and Jaavscript) frontend, this software offers interactive graphs, a sleek UI for transaction management, and much more with mobile first approach.
 
+<img src="SS-UI.png" alt="UI" width="500">
+
 ## Features
 - **Interactive Graphs:** Visualize your spending and saving patterns with our interactive graphs.
 
